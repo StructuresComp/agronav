@@ -1,0 +1,6 @@
+2023-06-06 16:08:56,827 INFO Namespace(config='./config.yml', model='./result/agroNav_LineDetection/reproduce/model_best.pth', align=False, tmp='./data/inference/output/')
+2023-06-06 16:08:58,136 INFO => loading pretrained model './result/agroNav_LineDetection/reproduce/model_best.pth'
+2023-06-06 16:08:58,387 INFO => loaded checkpoint './result/agroNav_LineDetection/reproduce/model_best.pth'
+2023-06-06 16:08:58,387 INFO Data loading done.
+2023-06-06 16:08:58,387 INFO Start testing.
+2023-06-06 16:08:59,733 INFO Test done! Total 5 imgs at 1.1629 secs without image io, fps: 4.299
