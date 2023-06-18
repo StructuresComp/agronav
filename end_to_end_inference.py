@@ -1,88 +1,101 @@
+import argparse
 import os
-os.environ['CUDA_VISIBLE_DEVICES'] = '0'
+import random
+import time
+from os.path import isfile, join, split
 
-from argparse import ArgumentParser
-
-# Segmentation
-from mmseg.apis import inference_segmentor, init_segmentor, show_result_pyplot
-from mmseg.core.evaluation import get_palette
-from mmcv import Config
-from mmcv.runner import load_checkpoint
-from mmseg.core import get_classes
-
-from segmentation.agronav_mobilenetv3 import *
-# from segmentation.agronav_hrnet import *
-# from segmentation.agronav_resnest import *
-
-# Semantic line detection
-
-
-import glob as glob
-import os
-import pudb
-import mmcv
+import torch
+import torchvision
+import torch.backends.cudnn as cudnn
+import torch.nn as nn
+import torch.optim
 import numpy as np
-import matplotlib.pyplot as plt
+import tqdm
+import yaml
+import cv2
+
+from torch.optim import lr_scheduler
+from logger import Logger
+from dataloader import get_loader
+from model.network import Net
+from skimage.measure import label, regionprops
+from utils import reverse_mapping, visulize_mapping, edge_align, get_boundary_point
+
+parser = argparse.ArgumentParser(description='PyTorch Semantic-Line Training')
+# arguments from command line
+parser.add_argument('--config', default="./config.yml", help="path to config file")
+parser.add_argument('--model', required=True, help='path to the pretrained model')
+parser.add_argument('--align', default=False, action='store_true')
+parser.add_argument('--tmp', default="", help='tmp')
+args = parser.parse_args()
+
+assert os.path.isfile(args.config)
+CONFIGS = yaml.full_load(open(args.config))
+
+# merge configs
+if args.tmp != "" and args.tmp != CONFIGS["MISC"]["TMP"]:
+    CONFIGS["MISC"]["TMP"] = args.tmp
+
+os.makedirs(CONFIGS["MISC"]["TMP"], exist_ok=True)
+logger = Logger(os.path.join(CONFIGS["MISC"]["TMP"], "log.txt"))
 
 
 def main():
-    parser = ArgumentParser()
-    parser.add_argument(
-        '--image', 
-        default='segmentation/data/demo/GOPR0016.JPG',
-        help='Image file')
-    parser.add_argument(
-        '-w', '--checkpoint', 
-        default='segmentation/checkpoint/MobileNetV3.pth',
-        help='weight file name'
-    )
-    parser.add_argument(
-        '--device', default='cuda:0', help='Device used for inference')
-    parser.add_argument(
-        '--palette',
-        default='cityscapes',
-        help='Color palette used for segmentation map')
-    parser.add_argument(
-        '--opacity',
-        type=float,
-        default=0.5,
-        help='Opacity of painted segmentation map. In (0, 1] range.')
-    parser.add_argument(
-        '--model',
-        default='MobileNetV3',
-        help='Model name')
-    args = parser.parse_args()
+    logger.info(args)
 
-    # if args.model == 'ResNest':
-    #     cfg = cfg_resnest
-    # elif args.model == 'HRNet':
-    #     cfg = cfg_hrnet
-    # else:
-    #     cfg = cfg_mobilenetv3
+    seg_model = init_segmentor(CONFIGS["SEGMENTATION"]["CONFIG_PATH"], checkpoint=None,
+                               device=CONFIGS["TRAIN"]["DEVICE"])
+    load_checkpoint(seg_model, CONFIGS["SEGMENTATION"]["CHECKPOINT"], map_location='cpu')
 
-    # build the model from a config file and a checkpoint file
-    model = init_segmentor(cfg, checkpoint=None, device=args.device)
-    cfg.load_from = args.checkpoint
-    checkpoint = load_checkpoint(model, args.checkpoint, map_location='cpu')
-    if 'CLASSES' in checkpoint.get('meta', {}):
-        model.CLASSES = checkpoint['meta']['CLASSES']
-    else:
-        model.CLASSES = get_classes(args.palette)
+    second_model = Net(numAngle=CONFIGS["SECOND_MODEL"]["NUMANGLE"], numRho=CONFIGS["SECOND_MODEL"]["NUMRHO"],
+                       backbone=CONFIGS["SECOND_MODEL"]["BACKBONE"])
+    second_model.load_state_dict(torch.load(CONFIGS["SECOND_MODEL"]["WEIGHTS"]))
+    second_model.to(CONFIGS["TRAIN"]["DEVICE"])
+    second_model.eval()
 
-    image_path = args.image
-    save_dir = 'segmentation/demo'
-    image = mmcv.imread(image_path)
-    result= inference_segmentor(model, image)
+    test_loader = get_loader(CONFIGS["DATA"]["TEST_DIR"], CONFIGS["DATA"]["TEST_LABEL_FILE"],
+                             batch_size=1, num_thread=CONFIGS["DATA"]["WORKERS"], test=True)
 
-    save_name = f"{image_path.split(os.path.sep)[-1].split('.')[0]}"
+    logger.info("Data loading done.")
 
-    show_result_pyplot( model,
-                        image,
-                        result,
-                        palette,
-                        opacity=args.opacity,
-                        out_file=f"{save_dir}/{save_name}.jpg")
+    logger.info("Start testing.")
+    total_time = test(test_loader, seg_model, second_model, args)
+
+    logger.info("Test done! Total %d images at %.4f seconds without image I/O, FPS: %.3f" % (
+    len(test_loader), total_time, len(test_loader) / total_time))
+
+
+def test(test_loader, seg_model, second_model, args):
+    seg_model.eval()
+    second_model.eval()
+    with torch.no_grad():
+        bar = tqdm.tqdm(test_loader)
+        forward_time = 0
+        post_processing_time = 0
+        for i, data in enumerate(bar):
+            t = time.time()
+            images, names, size = data
+
+            images = images.to(CONFIGS["TRAIN"]["DEVICE"])
+            segmentation_map = perform_segmentation(seg_model, images)
+
+            # Perform inference on the segmentation map using the second model
+            output = perform_inference(second_model, segmentation_map)
+
+            forward_time += (time.time() - t)
+            t = time.time()
+            visualize_save_path = os.path.join(CONFIGS["MISC"]["TMP"], 'visualize_test')
+            os.makedirs(visualize_save_path, exist_ok=True)
+
+            # Save the output image
+            save_output(output, join(visualize_save_path, names[0].split('/')[-1]))
+
+            post_processing_time += (time.time() - t)
+    print('Forward time for total images: %.6f' % forward_time)
+    print('Post-processing time for total images: %.6f' % post_processing_time)
+    return forward_time + post_processing_time
 
 
 if __name__ == '__main__':
     main()
+
