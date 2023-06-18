@@ -1,5 +1,5 @@
 import os
-os.environ['CUDA_VISIBLE_DEVICES'] = '1'
+os.environ['CUDA_VISIBLE_DEVICES'] = '0'
 
 from argparse import ArgumentParser
 
@@ -30,7 +30,7 @@ def main():
         help='Image file')
     parser.add_argument(
         '-w', '--checkpoint', 
-        default='segmentation/checkpoints/MobileNetV3.pth',
+        default='segmentation/checkpoint/MobileNetV3.pth',
         help='weight file name'
     )
     parser.add_argument(

@@ -5,7 +5,9 @@ deep-hough-transform/README_original.md
 deep-hough-transform/data/agroNav_LineDetection/
 deep-hough-transform/data/training/
 deep-hough-transform/result/agroNav_LineDetection/
+deep-hough-transform/checkpoint/
 segmentation/data/agronav/train/images/
 segmentation/data/agronav/train/labels/
-segmentation/checkpoints/
+segmentation/checkpoint/
 segmentation/output/
+.idea/

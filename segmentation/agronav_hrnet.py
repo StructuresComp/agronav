@@ -60,7 +60,7 @@ cfg.data.test.ann_dir = ann_dir
 cfg.data.test.pipeline = cfg.test_pipeline
 cfg.data.test.split = 'splits/val.txt'
 
-cfg.load_from = osp.abspath(osp.join(osp.dirname(__file__), 'checkpoints/HRNet.pth'))
+cfg.load_from = osp.abspath(osp.join(osp.dirname(__file__), 'checkpoint/HRNet.pth'))
 cfg.work_dir = osp.abspath(osp.join(osp.dirname(__file__), 'output'))
 
 cfg.log_config.interval = 10
