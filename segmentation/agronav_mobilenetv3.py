@@ -89,6 +89,7 @@ cfg.device = 'cuda'
 cfg.runner.max_iters = 15000
 
 cfg_mobilenetv3 = cfg.copy()
+segmentation_cfg = cfg
 
 # Let's have a look at the final config used for training
 print(f'Config:\n{cfg.pretty_text}')

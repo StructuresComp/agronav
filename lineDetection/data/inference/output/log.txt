@@ -1,0 +1,6 @@
+2023-06-17 23:24:13,079 INFO Namespace(align=False, config='./config.yml', model='./checkpoint/model_best.pth', tmp='./data/inference/output/')
+2023-06-17 23:24:14,798 INFO => loading pretrained model './checkpoint/model_best.pth'
+2023-06-17 23:24:15,037 INFO => loaded checkpoint './checkpoint/model_best.pth'
+2023-06-17 23:24:15,045 INFO Data loading done.
+2023-06-17 23:24:15,045 INFO Start testing.
+2023-06-17 23:24:16,507 INFO Test done! Total 5 imgs at 1.2357 secs without image io, fps: 4.046
