@@ -1,1 +1,4 @@
-/input/demo
+temp/1
+temp/3
+temp/4
+temp/2

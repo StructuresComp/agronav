@@ -18,7 +18,7 @@ AGRICULTURE-VISION: CHALLENGES & OPPORTUNITIES FOR COMPUTER VISION IN AGRICULTUR
 ---
 
 ### Updates
-* 06/17/2023: Revised instructions, tested inference code.
+* 06/22/2023: Revised instructions, tested image inference code.
 
 ---
 
@@ -53,8 +53,7 @@ This code has been tested on Python 3.8.
     ```
 4. Install `deep-hough-transform`
     ```bash
-    cd ../deep-hough-transform
-    cd deep-hough-transform
+    cd ../lineDetection
     cd model/_cdht
     python setup.py build 
     python setup.py install --user
@@ -71,7 +70,7 @@ This code has been tested on Python 3.8.
 
 2. Run the following lines for data augmentation and generation of the parametric space labels.
 ```sh
-cd deep-hough-transform
+cd lineDetection
 python data/prepare_data_NKL.py --root './data/agroNav_LineDetection' --label './data/agroNav_LineDetection' --save-dir './data/training/agroNav_LineDetection_resized_100_100' --fixsize 400 
 ```
 
@@ -95,14 +94,17 @@ python train.py
 
 ### Inference
 1. Download the pre-trained checkpoints for semantic segmentation [[MobileNetV3](), ]. Move the downloaded file to `./segmentation/checkpoint/`.
-2. Download the pre-trained checkpoints for semantic line detection [here](https://drive.google.com/file/d/1Q3s_QKUJiiCGibNzF44hQu8jfBK_Bxor/view?usp=sharing). Move the download file to `../deep-hough-transform/checkpoint/`.
+2. Download the pre-trained checkpoints for semantic line detection [here](https://drive.google.com/file/d/1Q3s_QKUJiiCGibNzF44hQu8jfBK_Bxor/view?usp=sharing). Move the download file to `../lineDetection/checkpoint/`.
 3. Move inference images to `./inference/input`
-4. Run the following command to perform inference on the test images.
+4. Run the following command to perform end-to-end inference on the test images. End-to-end inference begins with a raw RGB image, and visualizes the centerlines.
     ```bash
-   python end_to_end_inference.py
+   python e2e_inference_image.py
     ```
-5. The results will be saved in `./inference/output`
+5. The final results with the centerlines will be saved in `./inference/output_ceterline`, the intermediate results are saved in `./inference/temp` and `./inference/output`.
 
+*To run the semantic segmentation and line detection models independently, use `./segmentation/inference_image.py` and `./lineDetection/inference.py`*.
+
+---
 
 ## Citation
 If found helpful, please consider citing our work:

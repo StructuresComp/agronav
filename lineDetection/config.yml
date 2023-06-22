@@ -5,14 +5,14 @@ DATA:
     #LABEL_FILE: "data/training/nkl_train.txt"
     #VAL_LABEL_FILE: "data/training/nkl_val.txt"
     #TEST_LABEL_FILE: "data/training/nkl_test.txt"
-    DIR: "data/training/"
-    VAL_DIR: "data/training/"
-    TEST_DIR: "data/inference/"
-    LABEL_FILE: "data/training/agroNav_LineDetection_train.txt"
-    VAL_LABEL_FILE: "data/training/agroNav_LineDetection_val.txt"
-    #VAL_LABEL_FILE: "data/training/test_1716_100_100.txt"
-    #TEST_LABEL_FILE: "data/training/test_1716_100_100.txt"
-    TEST_LABEL_FILE: "data/inference/test_idx.txt"
+    DIR: "lineDetection/data/training/"
+    VAL_DIR: "lineDetection/data/training/"
+#    TEST_DIR: "data/inference/"
+    TEST_DIR: "inference/"
+    LABEL_FILE: "lineDetection/data/training/agroNav_LineDetection_train.txt"
+    VAL_LABEL_FILE: "lineDetection/data/training/agroNav_LineDetection_val.txt"
+    TEST_LABEL_FILE: "inference/inference_filenames.txt"
+#    TEST_LABEL_FILE: "data/inference/test_idx.txt"
     BATCH_SIZE: 1
     WORKERS: 4
 

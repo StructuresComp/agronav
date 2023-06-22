@@ -1,13 +1,16 @@
 custom_README.txt
 __pycache__
-deep-hough-transform/data/ignored scripts/
-deep-hough-transform/README_original.md
-deep-hough-transform/data/agroNav_LineDetection/
-deep-hough-transform/data/training/
-deep-hough-transform/result/agroNav_LineDetection/
-deep-hough-transform/checkpoint/
+lineDetection/data/ignored scripts/
+lineDetection/README_original.md
+lineDetection/data/agroNav_LineDetection/
+lineDetection/data/training/
+lineDetection/result/agroNav_LineDetection/
+lineDetection/checkpoint/
 segmentation/data/agronav/train/images/
 segmentation/data/agronav/train/labels/
 segmentation/checkpoint/
 segmentation/output/
 .idea/
+inference/output/
+inference/output_centerline/
+inference/temp/

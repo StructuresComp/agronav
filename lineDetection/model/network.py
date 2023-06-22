@@ -1,13 +1,15 @@
 import torch
 import numpy as np 
 import torch.nn as nn
+import os.path
+import importlib
 
-from model.backbone.fpn import FPN101, FPN50, FPN18, ResNext50_FPN
-from model.backbone.mobilenet import MobileNet_FPN
-from model.backbone.vgg_fpn import VGG_FPN
-from model.backbone.res2net import res2net50_FPN
+from lineDetection.model.backbone.fpn import FPN101, FPN50, FPN18, ResNext50_FPN
+from lineDetection.model.backbone.mobilenet import MobileNet_FPN
+from lineDetection.model.backbone.vgg_fpn import VGG_FPN
+from lineDetection.model.backbone.res2net import res2net50_FPN
 
-from model.dht import DHT_Layer
+from lineDetection.model.dht import DHT_Layer
 
 class Net(nn.Module):
     def __init__(self, numAngle, numRho, backbone):

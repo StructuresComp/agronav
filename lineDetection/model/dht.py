@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 import numpy as np
-from model._cdht.dht_func import C_dht
+from lineDetection.model._cdht.dht_func import C_dht
 
 class DHT_Layer(nn.Module):
     def __init__(self, input_dim, dim, numAngle, numRho):

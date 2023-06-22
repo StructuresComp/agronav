@@ -5,7 +5,7 @@ import cv2
 import os
 import torchvision
 from PIL import Image
-from basic_ops import *
+from lineDetection.basic_ops import *
 
 def draw_line(y, x, angle, image, color=(0,0,255), num_directions=24):
     '''
@@ -83,7 +83,11 @@ def reverse_mapping(point_list, numAngle, numRho, size=(32, 32)):
     return b_points
 
 def visulize_mapping(b_points, size, filename):
-    img = cv2.imread(os.path.join('./data/inference/input/', filename)) #change the path when using other dataset.
+    # img = cv2.imread(os.path.join('./data/inference/input/', filename)) #change the path when using other dataset.
+    if os.path.split(os.sys.argv[0])[1] == 'end_to_end_inference.py':
+        img = cv2.imread(os.path.join(os.path.split(os.path.dirname(__file__))[0], 'inference/temp', filename))
+    else:
+        img = cv2.imread(os.path.join(os.path.dirname(__file__), 'data/inference/input', filename))
     img = cv2.resize(img, size)
     for (y1, x1, y2, x2) in b_points:
         img = cv2.line(img, (x1, y1), (x2, y2), (255, 255, 0), thickness=int(0.01*max(size[0], size[1])))
