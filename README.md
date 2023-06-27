@@ -93,7 +93,7 @@ python train.py
 ---
 
 ### Inference
-1. Download the pre-trained checkpoints for semantic segmentation [[MobileNetV3](), ]. Move the downloaded file to `./segmentation/checkpoint/`.
+1. Download the pre-trained checkpoints for semantic segmentation [[MobileNetV3](https://drive.google.com/file/d/1CEL6JfLZbvZyaB0TL-cYeC9JvQkhsGDI/view?usp=sharing), [HRNet](https://drive.google.com/file/d/1oTbwQmOLEcL5ix4sKpANRvZX_-AyInLG/view?usp=sharing), [ResNest](https://drive.google.com/file/d/1sGZNJiUy9NyaQPFf3kFVuzlOI5-E4_xF/view?usp=sharing)]. Move the downloaded file to `./segmentation/checkpoint/`.
 2. Download the pre-trained checkpoints for semantic line detection [here](https://drive.google.com/file/d/1Q3s_QKUJiiCGibNzF44hQu8jfBK_Bxor/view?usp=sharing). Move the download file to `../lineDetection/checkpoint/`.
 3. Move inference images to `./inference/input`
 4. Run the following command to perform end-to-end inference on the test images. End-to-end inference begins with a raw RGB image, and visualizes the centerlines.
