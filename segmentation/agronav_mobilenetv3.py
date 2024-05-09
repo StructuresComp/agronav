@@ -51,7 +51,7 @@ cfg.dataset_type = 'AgroNavDataset'
 cfg.data_root = data_root
 
 cfg.data.samples_per_gpu = 6
-cfg.data.workers_per_gpu= 1
+cfg.data.workers_per_gpu= 6
 
 cfg.data.train.type = cfg.dataset_type
 cfg.data.train.data_root = cfg.data_root

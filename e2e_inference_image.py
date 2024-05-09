@@ -14,6 +14,7 @@ import torch.optim
 import numpy as np
 import tqdm
 import yaml
+import pudb
 
 from skimage.measure import label, regionprops
 
@@ -89,8 +90,8 @@ def main():
     for filename in os.listdir(args.input_dir):
         if filename.endswith(".jpg") or filename.endswith(".JPG") or filename.endswith(".png"):
             image = mmcv.imread(args.input_dir + filename)
-            # width = 800
-            # image = cv2.resize(image, (width, int((width / image.shape[1]) * image.shape[0])))
+            width = 800
+            image = cv2.resize(image, (width, int((width / image.shape[1]) * image.shape[0])))
             t = time.time()
             segmentation_result = inference_segmentor(segmentation_model, image)
             ntime += (time.time() - t)
@@ -130,7 +131,6 @@ def run_line_detection(test_loader, model, args):
             t = time.time()
             images, names, size = data
             images = images.cuda(device=line_detection_cfg["TRAIN"]["GPU_ID"])
-
             # width = 800
             # images = cv2.resize(images, (width, int((width / images.shape[1]) * images.shape[0])))
 

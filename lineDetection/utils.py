@@ -84,7 +84,7 @@ def reverse_mapping(point_list, numAngle, numRho, size=(32, 32)):
 
 def visulize_mapping(b_points, size, filename):
     # img = cv2.imread(os.path.join('./data/inference/input/', filename)) #change the path when using other dataset.
-    if os.path.split(os.sys.argv[0])[1] == 'end_to_end_inference.py':
+    if os.path.split(os.sys.argv[0])[1] == 'e2e_inference_image.py':
         img = cv2.imread(os.path.join(os.path.split(os.path.dirname(__file__))[0], 'inference/temp', filename))
     else:
         img = cv2.imread(os.path.join(os.path.dirname(__file__), 'data/inference/input', filename))

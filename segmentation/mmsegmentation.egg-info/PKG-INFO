@@ -15,13 +15,39 @@ Classifier: Programming Language :: Python :: 3.7
 Classifier: Programming Language :: Python :: 3.8
 Classifier: Programming Language :: Python :: 3.9
 Description-Content-Type: text/markdown
-Provides-Extra: all
-Provides-Extra: tests
-Provides-Extra: build
-Provides-Extra: optional
-Provides-Extra: mim
 License-File: LICENSE
 License-File: LICENSES.md
+Requires-Dist: matplotlib
+Requires-Dist: mmcls>=0.20.1
+Requires-Dist: numpy
+Requires-Dist: packaging
+Requires-Dist: prettytable
+Provides-Extra: all
+Requires-Dist: cityscapesscripts; extra == "all"
+Requires-Dist: matplotlib; extra == "all"
+Requires-Dist: mmcls>=0.20.1; extra == "all"
+Requires-Dist: numpy; extra == "all"
+Requires-Dist: packaging; extra == "all"
+Requires-Dist: prettytable; extra == "all"
+Requires-Dist: codecov; extra == "all"
+Requires-Dist: flake8; extra == "all"
+Requires-Dist: interrogate; extra == "all"
+Requires-Dist: pytest; extra == "all"
+Requires-Dist: xdoctest>=0.10.0; extra == "all"
+Requires-Dist: yapf; extra == "all"
+Provides-Extra: tests
+Requires-Dist: codecov; extra == "tests"
+Requires-Dist: flake8; extra == "tests"
+Requires-Dist: interrogate; extra == "tests"
+Requires-Dist: pytest; extra == "tests"
+Requires-Dist: xdoctest>=0.10.0; extra == "tests"
+Requires-Dist: yapf; extra == "tests"
+Provides-Extra: build
+Provides-Extra: optional
+Requires-Dist: cityscapesscripts; extra == "optional"
+Provides-Extra: mim
+Requires-Dist: mmcls>=0.20.1; extra == "mim"
+Requires-Dist: mmcv-full<1.7.0,>=1.4.4; extra == "mim"
 
 <div align="center">
   <img src="resources/mmseg-logo.png" width="600"/>
