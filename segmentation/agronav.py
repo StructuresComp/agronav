@@ -13,7 +13,7 @@ import pudb
 # data_root = 'data/cityscape-freiburg'
 # data_root = 'data/agronav/train/vit-inferences/'
 # data_root = 'data/agronav/train/manual/'
-data_root = 'data/agronav/train/total/'
+data_root = osp.abspath(osp.join(osp.dirname(__file__), 'data/agronav/train/'))
 img_dir = 'images'
 ann_dir = 'labels'
 
@@ -142,9 +142,6 @@ cfg.data.test.split = 'splits/val.txt'
 # cfg.load_from = 'checkpoints/lraspp_m-v3-d8_512x1024_320k_cityscapes_20201224_220337-cfe8fb07.pth'
 # cfg.load_from = 'checkpoints/fcn_s101-d8_512x1024_80k_cityscapes_20200807_140631-f8d155b3.pth'
 
-# cfg.load_from = 'output/ResNest-FCN/iterations-40000/iter_40000.pth'
-# cfg.load_from = 'output/HRNet/iterations-40000/iter_40000.pth'
-# cfg.load_from = 'output/MobileNetV3/iterations-40000/iter_40000.pth'
 
 # cfg.load_from = 'output/ResNest-FCN/agronav/iterations-40000/iter_40000.pth'
 # cfg.load_from = 'output/HRNet/agronav/iterations-40000/iter_40000.pth'

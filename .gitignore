@@ -8,7 +8,7 @@ lineDetection/result/agroNav_LineDetection/
 lineDetection/checkpoint/
 segmentation/data/agronav/train/images/
 segmentation/data/agronav/train/labels/
-segmentation/checkpoint/
+segmentation/checkpoints/
 segmentation/output/
 .idea/
 inference/output/

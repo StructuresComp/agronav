@@ -1,5 +1,5 @@
 import os
-os.environ['CUDA_VISIBLE_DEVICES'] = '4'
+os.environ['CUDA_VISIBLE_DEVICES'] = '0'
 from mmseg.datasets import build_dataset
 from mmseg.models import build_segmentor
 from mmseg.apis import train_segmentor

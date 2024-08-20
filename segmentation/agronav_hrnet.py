@@ -12,13 +12,11 @@ from agronav_dataset import AgroNavDataset
 import pudb
 
 # Set up paths
-# data_root = 'data/agronav/train/'
 data_root = osp.abspath(osp.join(osp.dirname(__file__), 'data/agronav/train/'))
 img_dir = 'images'
 ann_dir = 'labels'
 
 from mmcv import Config
-# cfg = Config.fromfile('configs/mobilenet_v3/lraspp_m-v3-d8_512x1024_320k_cityscapes.py')
 cfg_path = osp.abspath(osp.join(osp.dirname(__file__), 'configs/hrnet/fcn_hr18_512x1024_40k_cityscapes.py'))
 cfg = Config.fromfile(cfg_path)
 

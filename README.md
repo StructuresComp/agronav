@@ -62,6 +62,10 @@ This code has been tested on Python 3.8.
 
 ### Training the Semantic Segmentation Model
 
+1. Download the Agroscapes Segmentation dataset from  [here](https://drive.google.com/drive/folders/1XfvWrEmAVhW9r6PF-46aBSf32KLaqshq?usp=sharing) and extract the images and labels to `data/agronav/images` and `data/agronav/labels` respectively.
+
+2. Run `python train-agronav.py` to start training. Although before that check the file `agronav.py` for the configuration of training (`cfg`). You might want to edit the python file for cfg based on your training model. Accordingly edit `cfg.load_from` and `cfg.work_dir`, for your checkpoint and output directory respectively. 
+
 ---
 
 ### Training the Semantic Line Detection Model
