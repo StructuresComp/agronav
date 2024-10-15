@@ -33,7 +33,7 @@ class Line(object):
     def rescale(self, rh, rw):
         coor = np.array(self.__coordinates)
         r = np.array([rh, rw, rh, rw])
-        self.__coordinates = np.round(coor * r).astype(np.int).tolist()
+        self.__coordinates = np.round(coor * r).astype(int).tolist()
 
     def __repr__(self):
         return str(self.coord)

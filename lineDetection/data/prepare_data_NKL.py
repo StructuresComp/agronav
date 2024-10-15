@@ -7,21 +7,22 @@ from os.path import join, split, splitext, abspath, isfile
 sys.path.insert(0, abspath(".."))
 sys.path.insert(0, abspath("."))
 from utils import Line, LineAnnotation, line2hough
-import matplotlib
-import matplotlib.pyplot as plt
+# import matplotlib
+# import matplotlib.pyplot as plt
 from skimage.measure import label, regionprops
 
 parser = argparse.ArgumentParser(description="Prepare semantic line data format.")
-parser.add_argument('--root', type=str, required=True, help='the data root dir.')
-parser.add_argument('--label', type=str, required=True, help='the label root dir.')
-parser.add_argument('--save-dir', type=str, required=True, help='save-dir')
-parser.add_argument('--fixsize', type=int, default=None, help='fix resize of images and annotations')
+#parser.add_argument('--root', type=str, required=True, help='the data root dir.')
+parser.add_argument('--label', type=str, default="/home/r4hul-lcl/Datasets/row-detection-agronav/test/output_deg_1_f1_10_resnet50-argonav-v", help='the label root dir.')
+parser.add_argument('--save-dir', type=str, default="/home/r4hul-lcl/Datasets/row-detection-agronav/test/preds-v", help='save-dir')
+parser.add_argument('--fixsize', type=int, default=400, help='fix resize of images and annotations')
 parser.add_argument('--numangle', type=int, default=100)
 parser.add_argument('--numrho', type=int, default=100)
 args = parser.parse_args()
 
 label_path = abspath(args.label)
-image_dir = abspath(args.root)
+image_dir = label_path.replace("labels-agronav", "images")
+
 save_dir = abspath(args.save_dir)
 os.makedirs(save_dir, exist_ok=True)
 def nearest8(x):
@@ -64,7 +65,7 @@ for idx, label_file in enumerate(labels_files):
     else:
         print("Warning: image %s doesnt exist!" % join(image_dir, filename+".jpg"))
         continue
-    for argument in range(2):
+    for argument in range(1):
         if argument == 0:
             lines = []
             with open(join(label_path, label_file)) as f:
@@ -136,10 +137,10 @@ for idx, label_file in enumerate(labels_files):
         save_name = os.path.join(save_dir, filename)
 
         np.save(save_name, data)
-        cv2.imwrite(save_name + '.jpg', im)
+        # cv2.imwrite(save_name + '.jpg', im)
         # cv2.imwrite(save_name + '_p_label.jpg', hough_space_label*255)
         # cv2.imwrite(save_name + '_vis.jpg', vis)
-        cv2.imwrite(save_name + '_mask.jpg', mask*255)
+        # cv2.imwrite(save_name + '_mask.jpg', mask*255)
 #print(stastic)
 #print(angle_stastic.astype(np.int))
 
