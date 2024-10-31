@@ -6,17 +6,26 @@ import numpy as np
 import os
 import pandas as pd
 import cv2
-from sklearn.linear_model import LinearRegression
 import argparse
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Convert Row Detection jsons labels to agronav's format")
-    parser.add_argument('--input_folder', type=str, default="/home/r4hul-lcl/Datasets/row-detection-agronav/val", help='Path to the input folder containing JSON files')
+    parser.add_argument('--input_folder', type=str, default="/home/r4hul-lcl/Datasets/row-detection-agronav/test", help='Path to the input folder containing JSON files')
     parser.add_argument('--labels_folder', type=str, default="labels", help='labels folder name')
     parser.add_argument('--output_folder', type=str, default="labels-agronav", help='folder name for outputs')
     parser.add_argument('--dont_delete', type=bool, default=True, help='dont delete')
     return parser.parse_args()
 
+
+def get_boundary_point(y_pnts, x_pnts, pnt, W):
+    p_y = np.polyfit(y_pnts, x_pnts, N_DEGREE)
+    p_x = np.polyfit(x_pnts, y_pnts, N_DEGREE)
+    x_close = np.polyval(p_y, pnt)
+    y_close = pnt
+    if x_close < 0 or x_close > W:
+        x_close = 0 if x_close < 0 else W
+        y_close = np.polyval(p_x, x_close)
+    return x_close, y_close
 
 def get_cords(data_df, idxs_l, idxs_r, H, W):
     coords = []
@@ -26,11 +35,12 @@ def get_cords(data_df, idxs_l, idxs_r, H, W):
         y_idxs = np.argsort(y_pnts)
         x_pnts = x_pnts[y_idxs]
         y_pnts = y_pnts[y_idxs]
-        y_p = np.polyfit(y_pnts, x_pnts, N_DEGREE)
-        coords.append(int(np.polyval(y_p, 0)))
-        coords.append(0)
-        coords.append(int(np.polyval(y_p, H)))
-        coords.append(H)
+        x1, y1 = get_boundary_point(y_pnts, x_pnts, 0, W)
+        coords.append(int(x1))
+        coords.append(int(y1))
+        x2, y2 = get_boundary_point(y_pnts, x_pnts, H, W)
+        coords.append(int(x2))
+        coords.append(int(y2))
     return coords
 
 def find_ego_idx(key_points, fileName, H, W):
