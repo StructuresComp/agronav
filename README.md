@@ -123,5 +123,6 @@ If found helpful, please consider citing our work:
     pages     = {6271-6280}
 }
 ```
-
+### Acknowledgement
+We acknowledge financial support from the US Department of Agriculture and UCLA-Amazon Science Hub for Humanity and Artificial Intelligence.
 
